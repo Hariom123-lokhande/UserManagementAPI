@@ -1,0 +1,77 @@
+<div class="login-container">
+
+  <mat-card class="login-card">
+
+    <h1>User Login</h1>
+
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <mat-form-field appearance="outline">
+
+        <mat-label>Email</mat-label>
+
+        <input matInput
+               type="email"
+               name="email"
+               required
+               email
+               #emailModel="ngModel"
+               [ngModel]="email()"
+               (ngModelChange)="email.set($event)">
+        @if (emailModel.invalid && (emailModel.dirty || emailModel.touched)) {
+          <mat-error>
+            @if (emailModel.errors?.['required']) { Email is required }
+            @else if (emailModel.errors?.['email']) { Please enter a valid email }
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Password</mat-label>
+
+        <input matInput
+               type="password"
+               name="password"
+               required
+               pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':&quot;\\|,.<>\/?]).{6,}"
+               #passwordModel="ngModel"
+               [ngModel]="password()"
+               (ngModelChange)="password.set($event)">
+        @if (passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)) {
+          <mat-error>
+            @if (passwordModel.errors?.['required']) { Password is required }
+            @else if (passwordModel.errors?.['pattern']) { 
+              Password must have: 1 Upper, 1 Lower, 1 Number, 1 Symbol (min 6 chars)
+            }
+          </mat-error>
+        }
+
+      </mat-form-field>
+
+      <button mat-raised-button
+              type="submit"
+              color="primary"
+              [disabled]="isLoading()"
+              class="login-button">
+        @if (isLoading()) {
+          <mat-spinner diameter="20" color="accent"></mat-spinner>
+        } @else {
+          Login
+        }
+      </button>
+    </form>
+
+    <p class="auth-link">
+
+      Don't have an account?
+
+      <a routerLink="/register">
+        Register
+      </a>
+
+    </p>
+
+  </mat-card>
+
+</div>

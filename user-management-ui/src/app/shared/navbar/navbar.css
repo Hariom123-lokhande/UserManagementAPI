@@ -1,0 +1,78 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar {
+/*  background: white !important;*/
+  background: #c0d3e0;
+  color: #1e3a8a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #1e3a8a;
+}
+
+.nav-links button {
+  color: #1e3a8a !important;
+
+  font-weight: 500;
+  margin-left: 8px;
+  opacity: 0.9;
+  transition: all 0.2s;
+}
+
+.nav-links button:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Visibility Logic */
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  mat-toolbar {
+    padding: 0 16px;
+    background: white !important;
+    /* Made white for mobile */
+    color: #1e3a8a !important;
+    /* Dark blue text/icons */
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    color: #1e3a8a !important;
+  }
+
+  .mobile-only button {
+    color: #1e3a8a !important;
+  }
+}
+
+/* Ensure material icons in menu are properly aligned */
+.mat-mdc-menu-item .mat-icon {
+  margin-right: 12px;
+  color: #64748b;
+}

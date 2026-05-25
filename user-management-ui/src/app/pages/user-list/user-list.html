@@ -1,0 +1,192 @@
+<div class="user-list-wrapper">
+
+  <!-- Desktop Table View -->
+  <mat-card class="table-container desktop-only">
+    <div class="card-header">
+      <h1>User List</h1>
+      <div class="header-actions">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search users...</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event); page.set(1)" placeholder="Name or Email">
+        </mat-form-field>
+        <button mat-raised-button color="primary" routerLink="/users/add" class="add-btn">
+          <mat-icon>add</mat-icon> Add User
+        </button>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <div class="bulk-toolbar">
+        <div class="bulk-toolbar-left">
+          <div class="bulk-checkbox">
+            <mat-checkbox
+              [checked]="allSelected()"
+              [disabled]="!selectableUsers().length"
+              (change)="toggleSelectAll($event.checked)">
+              Select All
+            </mat-checkbox>
+          </div>
+          <span class="selected-count">{{ selectedCount() }} selected</span>
+        </div>
+        <button
+          mat-flat-button
+          class="bulk-delete-btn"
+          [disabled]="!hasSelectedUsers()"
+          (click)="deleteSelectedUsers()">
+          <mat-icon>delete_sweep</mat-icon>
+          Delete Selected
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="users()">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef class="select-header-cell">
+            <span class="select-header-label">Select</span>
+          </th>
+          <td mat-cell *matCellDef="let user" class="select-cell">
+            <mat-checkbox
+              [checked]="isUserSelected(user.id)"
+              [disabled]="isCurrentUser(user.email)"
+              (click)="$event.stopPropagation()"
+              (change)="toggleUserSelection(user.id, $event.checked)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Id</th>
+          <td mat-cell *matCellDef="let user">{{user.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let user"
+            [matTooltip]="'ID: ' + user.id + ' | Name: ' + user.name + ' | Email: ' + user.email + ' | Age: ' + user.age"
+            matTooltipPosition="above">
+            <div class="name-cell">
+              <app-profile-avatar [user]="user" />
+              <span>{{user.name}}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">{{user.email}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef>Age</th>
+          <td mat-cell *matCellDef="let user">{{user.age}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let user" class="actions-cell">
+            <!-- Show ownership state instead of a delete action for the logged-in user. -->
+            @if (isCurrentUser(user.email)) {
+              <span class="self-badge">You</span>
+            } @else {
+              <button
+                mat-button
+                color="warn"
+                class="delete-action-btn"
+                (click)="$event.stopPropagation(); deleteUser(user.id, user.email)">
+                <mat-icon>delete</mat-icon>
+                Delete
+              </button>
+            }
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewUserDetails(row)" class="clickable-row"></tr>
+      </table>
+    </div>
+    <app-pagination [currentPage]="page()" [totalPages]="totalPages()" (pageChange)="page.set($event)"></app-pagination>
+  </mat-card>
+
+  <!-- Mobile Card View -->
+  <div class="mobile-only">
+    <div class="mobile-header">
+      <h1>User List</h1>
+      <div class="mobile-header-actions">
+        <button mat-raised-button color="primary" routerLink="/users/add" class="add-btn">
+          <mat-icon>add</mat-icon> Add User
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-bulk-actions">
+      <div class="bulk-toolbar-left">
+        <div class="bulk-checkbox">
+          <mat-checkbox
+            [checked]="allSelected()"
+            [disabled]="!selectableUsers().length"
+            (change)="toggleSelectAll($event.checked)">
+            Select All
+          </mat-checkbox>
+        </div>
+        <span class="selected-count">{{ selectedCount() }} selected</span>
+      </div>
+      <button
+        mat-flat-button
+        class="bulk-delete-btn"
+        [disabled]="!hasSelectedUsers()"
+        (click)="deleteSelectedUsers()">
+        <mat-icon>delete_sweep</mat-icon>
+        Delete Selected
+      </button>
+    </div>
+
+    <mat-form-field appearance="outline" class="search-field mobile-search">
+      <mat-label>Search users...</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event); page.set(1)" placeholder="Name or Email">
+    </mat-form-field>
+
+    @for (user of users(); track user.id) {
+    <mat-card class="user-card clickable-card"
+      [matTooltip]="'Click to view details'"
+      matTooltipPosition="above"
+      (click)="viewUserDetails(user)">
+      <div class="card-content">
+        <div class="card-select" (click)="$event.stopPropagation()">
+          <mat-checkbox
+            [checked]="isUserSelected(user.id)"
+            [disabled]="isCurrentUser(user.email)"
+            (change)="toggleUserSelection(user.id, $event.checked)">
+            Select
+          </mat-checkbox>
+        </div>
+        <div class="user-info">
+          <app-profile-avatar [user]="user" />
+          <div class="details">
+            <div class="name-id">
+              <span class="id">Id: {{user.id}}</span>
+              <span class="name">{{user.name}}</span>
+            </div>
+            <div class="extra-info">
+              <span>Email: {{user.email}}</span>
+              <span class="divider">•</span>
+              <span>Age: {{user.age}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="actions" (click)="$event.stopPropagation()">
+        <!-- Keep the mobile card consistent with the desktop self-delete rule. -->
+        @if (isCurrentUser(user.email)) {
+          <span class="self-badge">You</span>
+        } @else {
+          <button mat-button color="warn" class="delete-action-btn" (click)="deleteUser(user.id, user.email)">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        }
+      </div>
+    </mat-card>
+    }
+    <app-pagination [currentPage]="page()" [totalPages]="totalPages()" (pageChange)="page.set($event)"></app-pagination>
+  </div>

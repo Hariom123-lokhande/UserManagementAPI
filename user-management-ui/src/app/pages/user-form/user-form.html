@@ -1,0 +1,50 @@
+<mat-card class="form-container">
+  <h1>
+    @if (isEditMode()) {
+      Edit User
+    } @else {
+      Add User
+    }
+  </h1>
+
+  <div class="profile-upload-section">
+    <app-profile-avatar [user]="avatarUser()" size="large" />
+    <label class="upload-btn">
+      <mat-icon>photo_camera</mat-icon>
+      Upload Profile Photo
+      <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden (change)="onFileSelected($event)">
+    </label>
+    <small class="hint-text">Optional. Default image is shown if none is uploaded.</small>
+    @if (imageError()) {
+      <small class="error">{{ imageError() }}</small>
+    }
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [ngModel]="name()" (ngModelChange)="name.set($event)">
+  </mat-form-field>
+  <small class="error">{{ nameError() }}</small>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput [ngModel]="email()" (ngModelChange)="email.set($event)">
+  </mat-form-field>
+  <small class="error">{{ emailError() }}</small>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Age</mat-label>
+    <input type="number" min="1" matInput [ngModel]="age()" (ngModelChange)="age.set($event)">
+  </mat-form-field>
+  <small class="error">{{ ageError() }}</small>
+
+  <button mat-raised-button color="primary" (click)="saveUser()" [disabled]="isSaving()">
+    @if (isEditMode()) {
+      {{ isSaving() ? 'Updating...' : 'Update User' }}
+    } @else {
+      {{ isSaving() ? 'Saving...' : 'Save User' }}
+    }
+  </button>
+
+  <button mat-raised-button routerLink="/users">Back</button>
+</mat-card>

@@ -1,0 +1,20 @@
+.dialog-container { padding: 8px; min-width: 380px; }
+.full-width { width: 100%; }
+.main-info mat-form-field { margin-top: 8px; }
+.error-text { display: block; margin-top: -2px; color: #dc2626; font-size: 0.8rem; font-weight: 500; }
+.dialog-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; margin-bottom: 20px; }
+.close-btn { color: #666; }
+.profile-section { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding: 10px; background: #f8fafc; border-radius: 12px; }
+.avatar-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.upload-btn { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; color: #2563eb; font-weight: 600; cursor: pointer; }
+.upload-btn mat-icon { font-size: 18px; width: 18px; height: 18px; }
+.image-error { display: block; margin-bottom: 12px; }
+.main-info h3 { margin: 0; font-size: 1.4rem; color: #1e3a8a; }
+.role-badge { margin: 4px 0 0; font-size: 0.8rem; color: #2563eb; font-weight: 600; background: #dbeafe; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+.details-grid { display: flex; flex-direction: column; gap: 16px; }
+.detail-item { display: flex; align-items: center; gap: 16px; padding: 12px; border-radius: 8px; border: 1px solid #f1f5f9; }
+.detail-item .text { display: flex; flex-direction: column; }
+.detail-item label { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+.detail-item span { font-size: 1rem; color: #334155; font-weight: 500; }
+mat-dialog-actions { padding-top: 16px; gap: 8px; border-top: 1px solid #eee; margin-top: 10px; }
+.spacer { flex: 1 1 auto; }

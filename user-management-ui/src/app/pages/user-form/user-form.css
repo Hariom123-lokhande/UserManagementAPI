@@ -1,0 +1,81 @@
+.form-container {
+  width: 90%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.error {
+  color: red;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+h1 {
+  margin-bottom: 15px;
+}
+
+.profile-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.hint-text {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+/* Mobile Responsive */
+
+@media(max-width: 768px) {
+
+  .form-container {
+    padding: 20px;
+  }
+
+  h1 {
+    color: black; 
+/*    text-shadow: 0 2px 4px rgba(0,0,0,0.2);*/
+  }
+
+  button {
+    width: 100%;
+  }
+}

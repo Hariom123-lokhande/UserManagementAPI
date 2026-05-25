@@ -1,0 +1,6 @@
+<div class="profile-avatar" [class.large]="size() === 'large'">
+  <img
+    [src]="displayUrl()"
+    alt="Profil"
+    (error)="onImageError($event)" />
+</div>

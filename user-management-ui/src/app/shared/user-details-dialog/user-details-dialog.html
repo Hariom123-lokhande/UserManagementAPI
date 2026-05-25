@@ -1,0 +1,88 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>{{ isEditMode() ? 'Edit User Profile' : 'User Profile Details' }}</h2>
+    <button mat-icon-button (click)="close()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <div class="profile-section">
+      <div class="avatar-wrapper">
+        <app-profile-avatar [user]="avatarUser()" size="large" />
+        @if (isEditMode()) {
+          <label class="upload-btn">
+            <mat-icon>photo_camera</mat-icon>
+            Change Photo
+            <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden (change)="onFileSelected($event)">
+          </label>
+        }
+      </div>
+      <div class="main-info">
+        @if (!isEditMode()) {
+          <h3>{{ data.name }}</h3>
+          <p class="role-badge">User Member</p>
+        } @else {
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput [(ngModel)]="editData.name">
+          </mat-form-field>
+          <small class="error-text">{{ nameError() }}</small>
+        }
+      </div>
+    </div>
+
+    @if (imageError()) {
+      <small class="error-text image-error">{{ imageError() }}</small>
+    }
+
+    <div class="details-grid">
+      @if (!isEditMode()) {
+        <div class="detail-item">
+          <mat-icon color="primary">email</mat-icon>
+          <div class="text">
+            <label>Email Address</label>
+            <span>{{ data.email }}</span>
+          </div>
+        </div>
+
+        <div class="detail-item">
+          <mat-icon color="primary">cake</mat-icon>
+          <div class="text">
+            <label>Age</label>
+            <span>{{ data.age }} Years Old</span>
+          </div>
+        </div>
+      } @else {
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput [(ngModel)]="editData.email" type="email">
+        </mat-form-field>
+        <small class="error-text">{{ emailError() }}</small>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Age</mat-label>
+          <input matInput [(ngModel)]="editData.age" type="number">
+        </mat-form-field>
+        <small class="error-text">{{ ageError() }}</small>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    @if (!isEditMode()) {
+      <button mat-button color="accent" (click)="toggleEdit()">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+      <div class="spacer"></div>
+      <button mat-flat-button color="primary" (click)="close()">Close</button>
+    } @else {
+      <button mat-button (click)="toggleEdit()" [disabled]="isUploading()">Cancel</button>
+      <div class="spacer"></div>
+      <button mat-flat-button color="primary" (click)="updateUser()" [disabled]="isUploading()">
+        <mat-icon>check</mat-icon>
+        {{ isUploading() ? 'Saving...' : 'Update Profile' }}
+      </button>
+    }
+  </mat-dialog-actions>
+</div>

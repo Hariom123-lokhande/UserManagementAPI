@@ -1,0 +1,13 @@
+<div class="pagination-container">
+  <button mat-icon-button [disabled]="currentPage() === 1" (click)="onPageChange(currentPage() - 1)">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  
+  <span class="page-info">
+    Page {{ currentPage() }} of {{ totalPages() }}
+  </span>
+
+  <button mat-icon-button [disabled]="currentPage() === totalPages() || totalPages() === 0" (click)="onPageChange(currentPage() + 1)">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,40 @@
+<mat-toolbar color="black">
+
+  <span class="logo">User Management System</span>
+
+  <span class="spacer"></span>
+
+  <!-- Desktop Links -->
+  <div class="nav-links desktop-only">
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/users">Users</button>
+    <button mat-button routerLink="/users/add">Add User</button>
+    <button mat-button (click)="logout()">Logout</button>
+  </div>
+
+  <!-- Mobile Hamburger Menu -->
+  <div class="mobile-only">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item routerLink="/home">
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </button>
+      <button mat-menu-item routerLink="/users">
+        <mat-icon>people</mat-icon>
+        <span>Users</span>
+      </button>
+      <button mat-menu-item routerLink="/users/add">
+        <mat-icon>person_add</mat-icon>
+        <span>Add User</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>

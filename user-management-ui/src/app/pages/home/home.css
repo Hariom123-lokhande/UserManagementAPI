@@ -1,0 +1,28 @@
+.home-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 30px;
+  border-radius: 16px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+ul {
+  margin-bottom: 20px;
+}
+
+/* Mobile Responsive */
+
+@media(max-width: 768px) {
+
+  .home-container {
+    padding: 20px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
