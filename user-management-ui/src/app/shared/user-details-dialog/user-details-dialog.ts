@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user';
 import { applyProfileImageResponse } from '../../utils/profile-image.util';
@@ -18,6 +19,7 @@ import { ProfileAvatar } from '../profile-avatar/profile-avatar';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
@@ -41,12 +43,22 @@ export class UserDetailsDialog {
   previewUrl = signal<string | null>(null);
   isUploading = signal(false);
 
+  profileImagePath = signal<string | null>(this.data.profileImagePath ?? this.data.ProfileImagePath ?? null);
+  profileImageUrl = signal<string | null>(this.data.profileImageUrl ?? this.data.ProfileImageUrl ?? null);
+  profileImageType = signal<string | null>(this.data.profileImageType ?? this.data.ProfileImageType ?? null);
+
+  hasProfileImage = computed(() => Boolean(this.profileImagePath() || this.profileImageUrl()));
+
   avatarUser = computed(() => {
     if (this.previewUrl()) {
       return { profileImagePath: this.previewUrl() };
     }
 
-    return this.data;
+    return {
+      profileImagePath: this.profileImagePath(),
+      profileImageUrl: this.profileImageUrl(),
+      profileImageType: this.profileImageType()
+    };
   });
 
   close(refresh: boolean = false): void {
@@ -142,12 +154,46 @@ export class UserDetailsDialog {
       next: (response) => {
         applyProfileImageResponse(this.data, response);
         applyProfileImageResponse(this.editData, response);
+        this.profileImagePath.set(response.profileImagePath);
+        this.profileImageUrl.set(response.profileImageUrl);
+        this.profileImageType.set(response.profileImageType);
         this.resetImageSelection();
         this.isUploading.set(false);
         onComplete();
       },
       error: (err) => {
         this.imageError.set(err.error?.message ?? 'Failed to upload profile image.');
+        this.isUploading.set(false);
+      }
+    });
+  }
+
+  removeProfileImage() {
+    if (!this.hasProfileImage()) {
+      return;
+    }
+
+    this.isUploading.set(true);
+    this.userService.deleteProfileImage(this.data.id).subscribe({
+      next: () => {
+        this.isUploading.set(false);
+        this.imageError.set('');
+        this.resetImageSelection();
+
+        this.profileImagePath.set(null);
+        this.profileImageUrl.set(null);
+        this.profileImageType.set(null);
+
+        this.data.profileImagePath = null;
+        this.data.profileImageUrl = null;
+        this.data.profileImageType = null;
+
+        this.editData.profileImagePath = null;
+        this.editData.profileImageUrl = null;
+        this.editData.profileImageType = null;
+      },
+      error: (err) => {
+        this.imageError.set(err.error?.message ?? 'Failed to remove profile photo.');
         this.isUploading.set(false);
       }
     });

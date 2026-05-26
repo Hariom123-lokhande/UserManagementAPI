@@ -57,6 +57,20 @@ h1 {
   height: 18px;
 }
 
+.remove-photo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #b91c1c;
+}
+
+.remove-photo-btn mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
 .hint-text {
   color: #64748b;
   font-size: 0.75rem;

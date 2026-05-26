@@ -159,6 +159,32 @@ export class UserForm implements OnInit {
     });
   }
 
+  removeProfileImage() {
+    if (!this.isEditMode() || !this.userId || !(this.profileImagePath() || this.profileImageUrl())) {
+      return;
+    }
+
+    this.isSaving.set(true);
+    this.userService.deleteProfileImage(this.userId).subscribe({
+      next: () => {
+        this.profileImagePath.set(null);
+        this.profileImageUrl.set(null);
+        this.profileImageType.set(null);
+        this.selectedFile.set(null);
+        if (this.previewUrl()) {
+          URL.revokeObjectURL(this.previewUrl()!);
+        }
+        this.previewUrl.set(null);
+        this.imageError.set('');
+        this.isSaving.set(false);
+      },
+      error: () => {
+        this.imageError.set('Failed to remove profile photo.');
+        this.isSaving.set(false);
+      }
+    });
+  }
+
   saveUser() {
     if (!this.validateForm()) {
       return;

@@ -35,6 +35,10 @@ export class UserService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  deleteProfileImage(userId: number) {
+    return this.http.delete(`${this.apiUrl}/${userId}/profile-image`);
+  }
+
   uploadProfileImage(userId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);

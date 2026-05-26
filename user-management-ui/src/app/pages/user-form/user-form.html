@@ -14,6 +14,12 @@
       Upload Profile Photo
       <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden (change)="onFileSelected($event)">
     </label>
+    @if (isEditMode() && (profileImagePath() || profileImageUrl())) {
+      <button mat-button color="warn" type="button" class="remove-photo-btn" (click)="removeProfileImage()" [disabled]="isSaving()">
+        <mat-icon>delete</mat-icon>
+        Remove Photo
+      </button>
+    }
     <small class="hint-text">Optional. Default image is shown if none is uploaded.</small>
     @if (imageError()) {
       <small class="error">{{ imageError() }}</small>

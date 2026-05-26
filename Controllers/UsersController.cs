@@ -136,6 +136,32 @@ namespace UserManagementAPI.Controllers
             });
         }
 
+        [HttpDelete("{id}/profile-image")]
+        public async Task<IActionResult> DeleteProfileImage(int id)
+        {
+            var user = await _context.Users
+                .Include(u => u.Profile)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            if (user.Profile == null || string.IsNullOrWhiteSpace(user.Profile.ProfileImagePath))
+            {
+                return NoContent();
+            }
+
+            _profileImageService.DeleteProfileImage(user.Profile.ProfileImagePath);
+            user.Profile.ProfileImagePath = null;
+            user.Profile.ProfileImageUrl = null;
+            user.Profile.ProfileImageType = null;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
